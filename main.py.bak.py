@@ -92,9 +92,9 @@ if __name__=='__main__':
         xEu.append(origin[0])
         yEu.append(origin[1])
 
-    ## call the animator.  blit=True means only re-draw the parts that have changed.
-    anim = animation.FuncAnimation(fig, animate, init_func=init,
-                               frames=10, interval=200, blit=True)
+    # ## call the animator.  blit=True means only re-draw the parts that have changed.
+    # anim = animation.FuncAnimation(fig, animate, init_func=init,
+    #                            frames=10, interval=200, blit=True)
 
     ## save the animation as an mp4.  This requires ffmpeg or mencoder to be
     ## installed.  The extra_args ensure that the x264 codec is used, so that

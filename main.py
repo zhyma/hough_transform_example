@@ -20,7 +20,7 @@ zHo = []
 x_p = 2
 y_p = 3
 
-n_sample = 360/15+1
+n_sample = int(360/15+1)
 layers = 5
 
 def funcCircle(rIn = 1):
@@ -112,7 +112,8 @@ if __name__=='__main__':
     pointPass = ax1.plot(x_p, y_p, 'r+', markersize=7)
     ## line up those center points with share the same r
     lineCentOut, = ax1.plot([], [], lw=1, alpha=1)
-    ## cooresponding shape outline of the center
+    # ## cooresponding shape outline of the center
+    # print(n_sample)
     lineXY = [ax1.plot([], [], lw=1, alpha=0.5, color='g')[0] for i in range(n_sample*(layers+1))]
 
     ## the given point (all shapes pass through this point)
@@ -132,7 +133,7 @@ if __name__=='__main__':
 
     xXY = []
     yXY = []
-    samples = [t*360/(n_sample-1) for t in range(n_sample-1)]
+    samples = [int(t*360/(n_sample-1)) for t in range(n_sample-1)]
     samples.append(360)
     for i in range(1, layers):
         ## generate r-theta relationship basing on given function
