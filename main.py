@@ -20,7 +20,7 @@ zHo = []
 x_p = 2
 y_p = 3
 
-n_sample = int(360/15+1)
+n_sample = 360//15+1
 layers = 5
 
 def funcCircle(rIn = 1):
@@ -133,7 +133,7 @@ if __name__=='__main__':
 
     xXY = []
     yXY = []
-    samples = [int(t*360/(n_sample-1)) for t in range(n_sample-1)]
+    samples = [t*360//(n_sample-1) for t in range(n_sample-1)]
     samples.append(360)
     for i in range(1, layers):
         ## generate r-theta relationship basing on given function
