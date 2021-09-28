@@ -3,4 +3,5 @@ venv/*
 .vscode
 .idea/*
 *.gif
-.pyc
+*.pyc
+*.mp4

@@ -1,7 +1,7 @@
-from __future__ import print_function
+# from __future__ import print_function
 
 import numpy as np
-from math import sin, cos, pi
+from math import sin, cos, pi, tan, sqrt
 import os
 
 import matplotlib.pyplot as plt
@@ -21,23 +21,33 @@ x_p = 2
 y_p = 3
 
 n_sample = 360//15+1
-layers = 5
+layers = 7
 
-def funcCircle(rIn = 1):
+def arb_shape(rIn = 1):
     ## sample every 1 degree
-    theta = np.arange(0, 361, 1)
-    #r = r*np.ones(len(theta))
-    r = np.zeros(len(theta))
-    for i in range(len(theta)):
-        if i < 180:
-            r[i] = rIn + rIn*i/120.0
-        elif i > 360:
-            r[i] = rIn + rIn*(i-360)/120.0
-        else:
-            r[i] = rIn + rIn*(360-i)/120.0
+    # theta = np.arange(0, 361, 1)
+    # #r = r*np.ones(len(theta))
+    # r = np.zeros(len(theta))
+    # for i in range(len(theta)):
+    #     if i < 180:
+    #         r[i] = rIn + rIn*i/120.0
+    #     elif i > 360:
+    #         r[i] = rIn + rIn*(i-360)/120.0
+    #     else:
+    #         r[i] = rIn + rIn*(360-i)/120.0
+
+    degree = np.arange(0, 361, 1)
+    theta = [d/360.0*2*pi for d in degree]
+    r = []
+    for d in degree:
+        # t stands for theta
+        t = (d%60)/360*2*pi
+        x = sqrt(3)/(tan(t)+sqrt(3))
+        y = tan(t)*x
+        r.append(sqrt(x**2+y**2)*rIn)
     return [r, theta]
 
-def findShape(x, y, theta, inR):
+def find_shape(x, y, theta, inR):
     ## find origin
     ## x, y is the point that this shape passes
     ## theta is the angle
@@ -137,10 +147,10 @@ if __name__=='__main__':
     samples.append(360)
     for i in range(1, layers):
         ## generate r-theta relationship basing on given function
-        [outline, theta] = funcCircle(i)
+        [outline, theta] = arb_shape(i)
         for j in range(n_sample):
-            origin, outShape = findShape(x_p, y_p, samples[j], outline)
-            print(j)
+            origin, outShape = find_shape(x_p, y_p, samples[j], outline)
+            # print(j)
             xXY.append(origin[0])
             yXY.append(origin[1])
             xShape.append(outShape[0])
@@ -150,15 +160,10 @@ if __name__=='__main__':
     anim = animation.FuncAnimation(fig, animate, #init_func=init,
                                frames=n_sample*(layers-1), interval=200, blit=False, repeat=False)
 
-    gif = False
-    if gif == True:
-        anim.save('hough.gif', dpi=80, writer='imagemagick')
-
-    ## save the animation as an mp4.  This requires ffmpeg or mencoder to be
-    ## installed.  The extra_args ensure that the x264 codec is used, so that
-    ## the video can be embedded in html5.  You may need to adjust this for
-    ## your system: for more information, see
-    ## http://matplotlib.sourceforge.net/api/animation_api.html
-    #anim.save('basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
+    save = True
+    if save == True:
+        plt.rcParams['animation.ffmpeg_path'] = 'C:\\ffmpeg\\bin\\ffmpeg.exe'
+        writervideo = animation.FFMpegWriter(fps=10, extra_args=['-vcodec', 'libx264'])
+        anim.save('hough.mp4', writer=writervideo)
 
     plt.show()
